@@ -9,7 +9,9 @@
 
 Live demo: https://aamirtechs.github.io/wifi-share-card/
 
-Just like the WiFi share feature built into Android and iPhone, but on a computer. It is a single self-contained HTML file with launchers that auto-detect your current network on Windows, macOS and Linux. No build step, no server, no account, no paid APIs. Everything runs locally on your own device.
+Just like the WiFi share feature built into Android and iPhone, but on a computer.
+
+> Important: A web page on its own cannot read your connected WiFi. Browsers block every website from seeing your WiFi name and password, for security. Opening the HTML or the live demo alone will show an empty form, that is expected. The launchers in this repo are what read your WiFi on your own computer: on Windows, download the files, extract them, then double-click `Show-My-WiFi.bat`. It creates `My-WiFi-Card.html` with your connected WiFi already filled in and opens that file (v1.1 behaviour, no URL parameters needed). It is a single self-contained HTML file with launchers that auto-detect your current network on Windows, macOS and Linux. No build step, no server, no account, no paid APIs. Everything runs locally on your own device.
 
 ## The problem
 
@@ -22,7 +24,7 @@ WiFi Share Card fixes that gap: your laptop shows the QR code, your phone scans 
 - **Printable share card.** QR code, WiFi name and password in one clean navy and gold card you can show on screen, save as PNG, or print for home, office, shop or guests.
 - **Live QR generation.** Standard `WIFI:T:WPA;S:<name>;P:<password>;;` format supported by iPhone Camera and Android. Updates as you type.
 - **Correct escaping.** Special characters in network names and passwords (`\ ; , " :`) are escaped to the WiFi QR standard, tested with symbol heavy passwords.
-- **Windows auto-detect.** `Show-My-WiFi.bat` / `.ps1` reads the connected SSID and its saved password using the built-in `netsh` command and opens the card already filled in.
+- **Windows auto-detect.** `Show-My-WiFi.bat` / `.ps1` reads the connected SSID and its saved password using the built-in `netsh` command, creates `My-WiFi-Card.html` already filled in, and opens it.
 - **macOS and Linux launchers.** Shell scripts using `networksetup` plus Keychain on Mac, and `nmcli` on Linux.
 - **Flexible networks.** WPA / WPA2 / WPA3, WEP, open networks, and hidden SSIDs. Show or hide the password on the card.
 - **Downloads.** Full card as PNG, QR code only as PNG, or copy the details to clipboard.
@@ -34,8 +36,8 @@ WiFi Share Card fixes that gap: your laptop shows the QR code, your phone scans 
 
 1. Connect your laptop to the WiFi you want to share.
 2. Download or clone this repository and keep all files in the same folder.
-3. Double-click `Show-My-WiFi.bat`.
-4. Your browser opens the card with the QR, name and password already filled in.
+3. Extract the files first if you downloaded a zip, then double-click `Show-My-WiFi.bat`.
+4. It creates `My-WiFi-Card.html` and your browser opens that card with the QR, name and password already filled in.
 5. Point your phone camera at the QR and tap Join / Connect.
 
 ### Option B, manual, any computer

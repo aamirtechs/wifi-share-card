@@ -1,12 +1,12 @@
 #!/bin/bash
-# WiFi Share Card - Linux auto-detect launcher (NetworkManager / nmcli)
-# Reads the connected WiFi name and its saved password, then opens the card.
-# Everything stays on your own laptop.
+# WiFi Share Card v1.1 - Linux auto-detect launcher (NetworkManager / nmcli)
+# Reads the connected WiFi name and saved password, creates My-WiFi-Card.html
+# filled in, and opens it. Everything stays on your own laptop.
 set -e
 cd "$(dirname "$0")"
 
-echo "WiFi Share Card - Auto-detect (Linux)"
-echo "-------------------------------------"
+echo "WiFi Share Card v1.1 - Auto-detect (Linux)"
+echo "------------------------------------------"
 
 if ! command -v nmcli >/dev/null 2>&1; then
   echo "nmcli not found. Open the HTML card manually and type your WiFi name and password."
@@ -21,20 +21,36 @@ fi
 echo "Connected WiFi : $SSID"
 
 PASSWORD=$(nmcli -s -g 802-11-wireless-security.psk connection show "$SSID" 2>/dev/null || true)
-AUTH="WPA"
 if [ -z "$PASSWORD" ]; then
   echo "Note: No password returned. It may be an open network, or you may need to type it on the card."
 fi
 
 HTML=""
-for f in wifi-share-card-v1.0.0.html wifi-share-card.html index.html; do
+for f in wifi-share-card-v1.1.0.html wifi-share-card-v1.0.0.html wifi-share-card.html index.html; do
   if [ -f "$f" ]; then HTML="$f"; break; fi
 done
-if [ -z "$HTML" ]; then echo "HTML card not found in this folder."; exit 1; fi
+if [ -z "$HTML" ]; then
+  echo "Card file not found. Downloading it from the live site..."
+  curl -sL -o index.html "https://aamirtechs.github.io/wifi-share-card/"
+  HTML="index.html"
+fi
 
-ENC_SSID=$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))' "$SSID")
-ENC_PASS=$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))' "$PASSWORD")
-ABS_PATH="$(pwd)/$HTML"
+SSID="$SSID" PASSWORD="$PASSWORD" HTML="$HTML" python3 - << 'PYEOF'
+import json, os, pathlib
+ssid = os.environ.get("SSID","")
+password = os.environ.get("PASSWORD","")
+html_path = pathlib.Path(os.environ["HTML"])
+template = html_path.read_text(encoding="utf-8")
+marker = "window.WIFI_CARD_CONFIG=null;/*__WIFI_CONFIG__*/"
+config = json.dumps({"title":"My WiFi","ssid":ssid,"password":password,"auth":"WPA"})
+if marker in template:
+    filled = template.replace(marker, f"window.WIFI_CARD_CONFIG={config};")
+    pathlib.Path("My-WiFi-Card.html").write_text(filled, encoding="utf-8")
+    print("Created My-WiFi-Card.html with your WiFi filled in.")
+else:
+    pathlib.Path("My-WiFi-Card.html").write_text(template, encoding="utf-8")
+    print("Older card version: opening template, you may need to type the password.")
+PYEOF
 
-xdg-open "file://$ABS_PATH?title=My%20WiFi&ssid=$ENC_SSID&password=$ENC_PASS&auth=$AUTH"
-echo "Opening your WiFi card in your browser. Scan the QR with your phone."
+xdg-open "My-WiFi-Card.html"
+echo "Opening your WiFi card. Scan the QR with your phone. Keep My-WiFi-Card.html private, it contains your password."

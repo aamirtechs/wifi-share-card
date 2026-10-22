@@ -92,8 +92,21 @@ footer{padding:0 0 28px;color:var(--muted);font-size:13px;text-align:center;line
   <div class="grid">
     <!-- Editor -->
     <section class="panel editor">
-      <h2>1. Enter your WiFi details</h2>
-      <p class="help">Type the exact network name and password from your router, or use the auto-detect launcher for Windows below and it will fill these in for you.</p>
+      <h2>1. Your connected WiFi</h2>
+      <p class="help">A web page on its own cannot read your connected WiFi. Browsers block every website from seeing your WiFi name and password, for security. That is a browser rule, not a bug in this card. Use the Windows launcher below and it will open a copy of this card with your connected WiFi already filled in. Or type the name and password manually, it takes 10 seconds.</p>
+
+      <div class="note" id="autoDetectNote">
+        <strong>Not seeing your WiFi here?</strong> That means you opened the web page directly. Download the zip, <strong>extract it first</strong> (do not run it from inside the zip), then double-click <code>Show-My-WiFi.bat</code>. It creates <code>My-WiFi-Card.html</code> with your WiFi filled in and opens that file for you.
+      </div>
+
+      <details>
+        <summary>Find your WiFi password on Windows without any script</summary>
+        <ol class="steps">
+          <li><strong>Windows 11:</strong> Settings, Network and internet, WiFi, click your connected network name, then View next to WiFi network password.</li>
+          <li><strong>Any Windows:</strong> Open Command Prompt and run <code>netsh wlan show interfaces</code> to see the connected name, then <code>netsh wlan show profile name="YOUR WIFI NAME" key=clear</code> and read the Key Content line. That is your password.</li>
+          <li>Type both into the form below and the QR appears instantly.</li>
+        </ol>
+      </details>
 
       <label for="title">Card title / place</label>
       <input id="title" type="text" placeholder="e.g. Home, Office, My Laptop" value="My WiFi">
@@ -136,11 +149,11 @@ footer{padding:0 0 28px;color:var(--muted);font-size:13px;text-align:center;line
       </details>
 
       <div class="note blue howto">
-        <strong>Fastest way on Windows: auto-detect</strong>
+        <strong>Fastest way on Windows: auto-detect (v1.1)</strong>
         <ol class="steps">
           <li>Connect your laptop to the WiFi you want to share.</li>
-          <li>Double-click <code>Show-My-WiFi.ps1</code> (or the <code>.bat</code> file) that came with this tool.</li>
-          <li>It reads the connected network name and password from Windows and opens this card already filled in.</li>
+          <li>Extract the zip first, then double-click <code>Show-My-WiFi.bat</code> in that extracted folder.</li>
+          <li>It reads the connected name and password from Windows, creates <code>My-WiFi-Card.html</code> already filled in, and opens it.</li>
           <li>Scan the QR with your phone camera and tap Join / Connect.</li>
         </ol>
         <p class="small" style="margin-top:8px">Windows may ask you to allow the script. The password is read from the WiFi profile already saved on your own laptop, using the built-in <code>netsh</code> command.</p>
@@ -190,7 +203,7 @@ footer{padding:0 0 28px;color:var(--muted);font-size:13px;text-align:center;line
 </main>
 
 <footer class="wrap">
-  WiFi Share Card v1.0.0. Made for sharing your own network with your own devices and guests.<br>
+  WiFi Share Card v1.1.0. Made for sharing your own network with your own devices and guests.<br>
   Keep printed cards somewhere private. Change your WiFi password if a card is shared too widely.
 </footer>
 
@@ -2494,6 +2507,7 @@ var qrcode = function() {
 }));
 
 </script>
+<script>window.WIFI_CARD_CONFIG=null;/*__WIFI_CONFIG__*/</script>
 <script>
 (function(){
   qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
@@ -2615,16 +2629,29 @@ var qrcode = function() {
       var cur=''; for(var i=0;i<text.length;i++){ var t=cur+text[i]; if(x.measureText(t).width>maxW){ x.fillText(cur,px,yy); yy+=lh; cur=text[i]; } else cur=t; } if(cur) x.fillText(cur,px,yy); return; }
     words.forEach(function(w){ var t=line?line+' '+w:w; if(x.measureText(t).width>maxW && line){ x.fillText(line,px,yy); yy+=lh; line=w; } else line=t; }); if(line) x.fillText(line,px,yy); }
 
-  // Load from URL params (used by the Windows / Mac / Linux launchers)
-  // Example: index.html?title=Home&ssid=MyWiFi&password=example&auth=WPA&hidden=0
+  // Load WiFi details from, in order:
+  // 1. window.WIFI_CARD_CONFIG injected by the v1.1 Windows launcher into My-WiFi-Card.html
+  // 2. URL query params, e.g. index.html?ssid=MyWiFi&password=example&auth=WPA
+  // 3. URL hash params, e.g. index.html#ssid=MyWiFi&password=example
   try{
-    var q = new URLSearchParams(window.location.search);
-    if(q.get('title')) els.title.value = q.get('title');
-    if(q.get('ssid')) els.ssid.value = q.get('ssid');
-    if(q.get('password')) els.pass.value = q.get('password');
-    if(q.get('auth')) els.auth.value = q.get('auth');
-    if(q.get('hidden') === '1' || q.get('hidden') === 'true') els.hidden.checked = true;
-    if(q.get('show') === '1') els.showPass.checked = true;
+    var cfg = window.WIFI_CARD_CONFIG || null;
+    var qs = new URLSearchParams(window.location.search || '');
+    var hs = new URLSearchParams((window.location.hash || '').replace(/^#/, ''));
+    function pick(name){
+      if(cfg && cfg[name]) return cfg[name];
+      return qs.get(name) || hs.get(name) || '';
+    }
+    var vTitle=pick('title'), vSsid=pick('ssid'), vPass=pick('password'), vAuth=pick('auth'), vHidden=pick('hidden'), vShow=pick('show');
+    if(vTitle) els.title.value = vTitle;
+    if(vSsid) els.ssid.value = vSsid;
+    if(vPass) els.pass.value = vPass;
+    if(vAuth) els.auth.value = vAuth;
+    if(vHidden === '1' || vHidden === 'true' || vHidden === true) els.hidden.checked = true;
+    if(vShow === '1' || vShow === 'true' || vShow === true) els.showPass.checked = true;
+    if(cfg && cfg.ssid){
+      var note = document.getElementById('autoDetectNote');
+      if(note){ note.className='note green'; note.innerHTML='<strong>Connected WiFi loaded.</strong> Your Windows launcher filled this card in automatically. Scan the QR with your phone to connect.'; }
+    }
   }catch(e){}
   update();
 })();

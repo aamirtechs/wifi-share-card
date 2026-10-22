@@ -1,15 +1,14 @@
 #!/bin/bash
-# WiFi Share Card - macOS auto-detect launcher
+# WiFi Share Card v1.1 - macOS auto-detect launcher
 # Reads the connected WiFi name, tries to read its password from your Keychain
-# (macOS will ask your permission), then opens the card filled in.
+# (macOS will ask your permission), creates My-WiFi-Card.html filled in, opens it.
 # Everything stays on your own Mac.
 set -e
 cd "$(dirname "$0")"
 
-echo "WiFi Share Card - Auto-detect (Mac)"
-echo "-----------------------------------"
+echo "WiFi Share Card v1.1 - Auto-detect (Mac)"
+echo "----------------------------------------"
 
-# Find WiFi device (usually en0)
 DEVICE=$(networksetup -listallhardwareports | awk '/Wi-Fi|AirPort/{getline; print $2}' | head -n 1)
 DEVICE=${DEVICE:-en0}
 
@@ -20,22 +19,37 @@ if [ -z "$SSID" ] || echo "$SSID" | grep -q "not associated"; then
 fi
 echo "Connected WiFi : $SSID"
 
-PASSWORD=""
-# This may pop up a Keychain permission dialog, that is expected on your own Mac
 PASSWORD=$(security find-generic-password -D "AirPort network password" -a "$SSID" -gw 2>/dev/null || true)
 if [ -z "$PASSWORD" ]; then
   echo "Note: Could not read password from Keychain. The card will open, type the password there if needed."
 fi
 
 HTML=""
-for f in wifi-share-card-v1.0.0.html wifi-share-card.html index.html; do
+for f in wifi-share-card-v1.1.0.html wifi-share-card-v1.0.0.html wifi-share-card.html index.html; do
   if [ -f "$f" ]; then HTML="$f"; break; fi
 done
-if [ -z "$HTML" ]; then echo "HTML card not found in this folder."; exit 1; fi
+if [ -z "$HTML" ]; then
+  echo "Card file not found. Downloading it from the live site..."
+  curl -sL -o index.html "https://aamirtechs.github.io/wifi-share-card/"
+  HTML="index.html"
+fi
 
-ENC_SSID=$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))' "$SSID")
-ENC_PASS=$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))' "$PASSWORD")
-ABS_PATH="$(pwd)/$HTML"
+SSID="$SSID" PASSWORD="$PASSWORD" HTML="$HTML" python3 - << 'PYEOF'
+import json, os, pathlib
+ssid = os.environ.get("SSID","")
+password = os.environ.get("PASSWORD","")
+html_path = pathlib.Path(os.environ["HTML"])
+template = html_path.read_text(encoding="utf-8")
+marker = "window.WIFI_CARD_CONFIG=null;/*__WIFI_CONFIG__*/"
+config = json.dumps({"title":"My WiFi","ssid":ssid,"password":password,"auth":"WPA"})
+if marker in template:
+    filled = template.replace(marker, f"window.WIFI_CARD_CONFIG={config};")
+    pathlib.Path("My-WiFi-Card.html").write_text(filled, encoding="utf-8")
+    print("Created My-WiFi-Card.html with your WiFi filled in.")
+else:
+    pathlib.Path("My-WiFi-Card.html").write_text(template, encoding="utf-8")
+    print("Older card version: opening template, you may need to type the password.")
+PYEOF
 
-open "file://$ABS_PATH?title=My%20WiFi&ssid=$ENC_SSID&password=$ENC_PASS&auth=WPA"
-echo "Opening your WiFi card in your browser. Scan the QR with your phone."
+open "My-WiFi-Card.html"
+echo "Opening your WiFi card. Scan the QR with your phone. Keep My-WiFi-Card.html private, it contains your password."

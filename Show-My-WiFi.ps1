@@ -1,14 +1,16 @@
-# WiFi Share Card - Windows auto-detect launcher
-# Reads the WiFi your laptop is connected to right now (name + saved password)
-# and opens wifi-share-card-v1.0.0.html already filled in, with a scannable QR.
+# WiFi Share Card v1.1 - Windows auto-detect launcher
+# Reads the WiFi your laptop is connected to right now (name + saved password),
+# creates My-WiFi-Card.html with those details already filled in, and opens it.
+# No web page can read your WiFi by itself, browsers block that for security.
+# This local script is what does the reading, using Windows' built-in netsh.
 # Everything stays on your own laptop. Nothing is sent anywhere.
-# Usage: Right-click > Run with PowerShell, or double-click Show-My-WiFi.bat
+# Usage: Extract the zip first, then double-click Show-My-WiFi.bat
 
 $ErrorActionPreference = "Stop"
 
 Write-Host ""
-Write-Host "WiFi Share Card - Auto-detect" -ForegroundColor Cyan
-Write-Host "-----------------------------" -ForegroundColor Cyan
+Write-Host "WiFi Share Card v1.1 - Auto-detect" -ForegroundColor Cyan
+Write-Host "----------------------------------" -ForegroundColor Cyan
 
 try {
     # 1. Find the connected SSID
@@ -37,14 +39,14 @@ try {
     }
     if (-not $password -and $auth -ne "nopass") {
         Write-Host "Note: Windows did not return a password for this network." -ForegroundColor Yellow
-        Write-Host "It may be an enterprise / office network, or the profile may not store the key." -ForegroundColor Yellow
-        Write-Host "The card will open anyway, you can type the password there." -ForegroundColor Yellow
+        Write-Host "It may be an enterprise / office network. The card will open anyway, type the password there." -ForegroundColor Yellow
     } else {
-        Write-Host "Password found : yes (hidden here, it will show on your private card)"
+        Write-Host "Password found : yes"
     }
 
-    # 3. Find the HTML card file next to this script
+    # 3. Find the card template next to this script, or download it if missing
     $candidates = @(
+        "wifi-share-card-v1.1.0.html",
         "wifi-share-card-v1.0.0.html",
         "wifi-share-card.html",
         "index.html"
@@ -55,27 +57,51 @@ try {
         if (Test-Path $candidate) { $htmlPath = $candidate; break }
     }
     if (-not $htmlPath) {
-        throw "Could not find the WiFi card HTML file next to this script. Keep Show-My-WiFi.ps1 and wifi-share-card-v1.0.0.html in the same folder."
+        Write-Host "Card file not found next to this script. Downloading it from the live site..."
+        $htmlPath = Join-Path $PSScriptRoot "index.html"
+        Invoke-WebRequest -UseBasicParsing -Uri "https://aamirtechs.github.io/wifi-share-card/" -OutFile $htmlPath
     }
 
-    # 4. Build a file URL with the details as query parameters and open it
-    $fileUrl = ([System.Uri]$htmlPath).AbsoluteUri
-    $query = "?title=" + [uri]::EscapeDataString("My WiFi") +
-             "&ssid=" + [uri]::EscapeDataString($ssid) +
-             "&password=" + [uri]::EscapeDataString($password) +
-             "&auth=" + [uri]::EscapeDataString($auth)
+    # 4. Create a filled copy: My-WiFi-Card.html
+    $template = [System.IO.File]::ReadAllText($htmlPath)
+    $marker = "window.WIFI_CARD_CONFIG=null;/*__WIFI_CONFIG__*/"
+    $outPath = Join-Path $PSScriptRoot "My-WiFi-Card.html"
 
-    $url = $fileUrl + $query
-    Write-Host ""
-    Write-Host "Opening your WiFi card in your browser..." -ForegroundColor Green
-    Write-Host "Scan the QR code there with your phone camera to connect."
-    Write-Host ""
-    Start-Process $url
+    if ($template.Contains($marker)) {
+        $config = @{
+            title    = "My WiFi"
+            ssid     = $ssid
+            password = $password
+            auth     = $auth
+        } | ConvertTo-Json -Compress
+        $filled = $template.Replace($marker, "window.WIFI_CARD_CONFIG=$config;")
+        $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+        [System.IO.File]::WriteAllText($outPath, $filled, $utf8NoBom)
+        Write-Host ""
+        Write-Host "Created My-WiFi-Card.html with your WiFi filled in." -ForegroundColor Green
+        Write-Host "That file contains your WiFi password. Keep it private, delete it on a shared computer."
+        Write-Host "Opening it now. Scan the QR code with your phone camera to connect."
+        Write-Host ""
+        Start-Process $outPath
+    } else {
+        # Older template without the injection marker: fall back to URL parameters
+        Write-Host "Note: This card file is the older version, opening it with URL parameters instead." -ForegroundColor Yellow
+        $fileUrl = ([System.Uri]$htmlPath).AbsoluteUri
+        $query = "?title=" + [uri]::EscapeDataString("My WiFi") +
+                 "&ssid=" + [uri]::EscapeDataString($ssid) +
+                 "&password=" + [uri]::EscapeDataString($password) +
+                 "&auth=" + [uri]::EscapeDataString($auth)
+        Start-Process ($fileUrl + $query)
+    }
 }
 catch {
     Write-Host ""
     Write-Host "Problem: $($_.Exception.Message)" -ForegroundColor Red
-    Write-Host "Tip: You can still open wifi-share-card-v1.0.0.html manually and type the WiFi name and password."
+    Write-Host "Common fixes:" -ForegroundColor Yellow
+    Write-Host "  1. Extract the zip first. Do not run the files from inside the zip."
+    Write-Host "  2. Make sure you are connected to WiFi, then try again."
+    Write-Host "  3. Or open the card HTML manually and type the WiFi name and password."
+    Write-Host "     On Windows 11 you can see the password in Settings, Network and internet, WiFi, your network, View."
     Write-Host ""
     Pause
 }
