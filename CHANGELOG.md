@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.2.0, 2026-10-22
+
+- Premium UI and UX redesign: Sora plus Plus Jakarta Sans, navy and gold hero with gradient mesh, glassmorphism quick start panel, step numbered panels, sticky card preview on desktop, refined shadows, focus rings and hover states
+- Dark mode toggle for the page, remembered on the device (the share card itself stays navy)
+- UX upgrades: password strength meter, password field disabled for open networks, toast confirmations for copy and downloads, smoother responsive layout, accessibility pass (aria labels, live status region, semantic landmarks)
+- SEO: keyword rich title and meta description, canonical, robots meta, Open Graph and Twitter cards with dedicated og-image.svg, favicon.svg and site.webmanifest
+- Structured data for search and AI: JSON-LD WebApplication, HowTo and FAQPage, with the FAQ also visible on the page word for word
+- New crawl and AI files at the site root: robots.txt (welcomes search and AI crawlers), sitemap.xml, llms.txt, .nojekyll
+- New visible content sections for search: how WiFi QR sharing works, use cases (home, office and shop, rentals), and the standard WiFi QR format explained
+- Launchers now prefer the v1.2.0 HTML file. No change to QR generation, payload format or the My-WiFi-Card injection method
+
+
 ## v1.1.0, 2026-10-22
 
 - Fix for "card does not show my connected WiFi": explained in the card itself that browsers block web pages from reading WiFi name and password, so the page alone will always start empty

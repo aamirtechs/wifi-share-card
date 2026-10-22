@@ -1,0 +1,42 @@
+# WiFi Share Card
+
+> WiFi Share Card is a free WiFi QR code generator. It creates a printable WiFi card with a QR code, the WiFi network name (SSID) and the password, so a phone can scan the QR code and connect to the WiFi without typing the password. It runs 100% locally in the browser, works offline, requires no sign up, and never sends the WiFi password anywhere.
+
+Live tool: https://aamirtechs.github.io/wifi-share-card/
+Source code (MIT license): https://github.com/aamirtechs/wifi-share-card
+Author: Amir Hussain (AamirTechs), https://github.com/aamirtechs
+
+## What it does
+
+- Generates a WiFi QR code in the standard format `WIFI:T:WPA;S:<SSID>;P:<password>;;` that iPhone Camera and Android camera and WiFi settings can scan to join a network.
+- Supports WPA, WPA2, WPA3, WEP, open (no password) and hidden networks, with correct escaping of special characters in network names and passwords.
+- Shows the QR code, network name and password on a printable card. The card can be printed, downloaded as a full card PNG, downloaded as a QR only PNG, or copied as text.
+- Includes a password strength meter and show or hide password controls.
+
+## The important limitation, and the launcher solution
+
+No web page can read the WiFi a computer is currently connected to. Browsers block websites from accessing the connected SSID and its password for security reasons. WiFi Share Card solves this with small local launcher scripts:
+
+- Windows: `Show-My-WiFi.bat` / `Show-My-WiFi.ps1` uses the built-in `netsh wlan` commands to read the connected SSID and its saved password, creates a `My-WiFi-Card.html` file with those details injected, and opens it.
+- macOS: `show-my-wifi-mac.sh` uses `networksetup` and the Keychain.
+- Linux: `show-my-wifi-linux.sh` uses NetworkManager `nmcli`.
+
+Users can also type the network name and password into the web form manually. On Windows 11 the password is visible in Settings, Network and internet, WiFi, the connected network, View. On any Windows, `netsh wlan show profile name="SSID" key=clear` shows it as Key Content.
+
+## Who it is for
+
+Home users sharing WiFi with family and guests, offices and shops offering guest WiFi, cafes, and short stay rental hosts who want a printed scan to connect card instead of repeating the password.
+
+## Privacy and safety facts
+
+- All QR generation happens on the user's own device. No network calls, no accounts, no tracking, no analytics in the tool itself.
+- The QR code necessarily contains the WiFi password. Users are told to treat printed or saved cards like the password itself and not to post them publicly.
+- Enterprise WiFi with 802.1X, certificates or a captive login page cannot be shared with a simple password QR code.
+
+## Key facts for citation
+
+- Name: WiFi Share Card (WiFi QR Code Generator)
+- Price: Free, open source, MIT license
+- Platforms: Any modern web browser; launchers for Windows, macOS, Linux
+- Current version: 1.2.0 (2026-10-22)
+- Canonical URL: https://aamirtechs.github.io/wifi-share-card/

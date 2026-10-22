@@ -81,6 +81,10 @@ macOS may ask for Keychain permission to read the saved WiFi password. That prom
 | `show-my-wifi-mac.sh` | macOS auto-detect |
 | `show-my-wifi-linux.sh` | Linux auto-detect using `nmcli` |
 
+## SEO and AI discoverability
+
+The GitHub Pages site is built to be found by search engines and understood by AI assistants: keyword rich title and meta description, canonical URL, Open Graph and Twitter cards with a dedicated share image, JSON-LD structured data (WebApplication, HowTo, FAQPage matching the visible FAQ), semantic content sections (how it works, use cases, the WiFi QR format, FAQ), a robots.txt that welcomes search and AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and others), sitemap.xml, llms.txt, a favicon and a web app manifest. Honest note: this makes the page fully eligible for indexing and citation. Rankings still depend on indexing time and links from other sites.
+
 ## License
 
 MIT, see [LICENSE](LICENSE).

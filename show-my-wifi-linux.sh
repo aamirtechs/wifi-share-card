@@ -1,11 +1,11 @@
 #!/bin/bash
-# WiFi Share Card v1.1 - Linux auto-detect launcher (NetworkManager / nmcli)
+# WiFi Share Card - Linux auto-detect launcher (NetworkManager / nmcli)
 # Reads the connected WiFi name and saved password, creates My-WiFi-Card.html
 # filled in, and opens it. Everything stays on your own laptop.
 set -e
 cd "$(dirname "$0")"
 
-echo "WiFi Share Card v1.1 - Auto-detect (Linux)"
+echo "WiFi Share Card - Auto-detect (Linux)"
 echo "------------------------------------------"
 
 if ! command -v nmcli >/dev/null 2>&1; then
@@ -26,7 +26,7 @@ if [ -z "$PASSWORD" ]; then
 fi
 
 HTML=""
-for f in wifi-share-card-v1.1.0.html wifi-share-card-v1.0.0.html wifi-share-card.html index.html; do
+for f in wifi-share-card-v1.2.0.html wifi-share-card-v1.1.0.html wifi-share-card-v1.0.0.html wifi-share-card.html index.html; do
   if [ -f "$f" ]; then HTML="$f"; break; fi
 done
 if [ -z "$HTML" ]; then

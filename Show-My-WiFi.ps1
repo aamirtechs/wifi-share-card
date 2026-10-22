@@ -1,4 +1,4 @@
-# WiFi Share Card v1.1 - Windows auto-detect launcher
+# WiFi Share Card - Windows auto-detect launcher
 # Reads the WiFi your laptop is connected to right now (name + saved password),
 # creates My-WiFi-Card.html with those details already filled in, and opens it.
 # No web page can read your WiFi by itself, browsers block that for security.
@@ -9,7 +9,7 @@
 $ErrorActionPreference = "Stop"
 
 Write-Host ""
-Write-Host "WiFi Share Card v1.1 - Auto-detect" -ForegroundColor Cyan
+Write-Host "WiFi Share Card - Auto-detect" -ForegroundColor Cyan
 Write-Host "----------------------------------" -ForegroundColor Cyan
 
 try {
@@ -46,6 +46,7 @@ try {
 
     # 3. Find the card template next to this script, or download it if missing
     $candidates = @(
+        "wifi-share-card-v1.2.0.html",
         "wifi-share-card-v1.1.0.html",
         "wifi-share-card-v1.0.0.html",
         "wifi-share-card.html",

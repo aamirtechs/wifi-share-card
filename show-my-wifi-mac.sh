@@ -1,12 +1,12 @@
 #!/bin/bash
-# WiFi Share Card v1.1 - macOS auto-detect launcher
+# WiFi Share Card - macOS auto-detect launcher
 # Reads the connected WiFi name, tries to read its password from your Keychain
 # (macOS will ask your permission), creates My-WiFi-Card.html filled in, opens it.
 # Everything stays on your own Mac.
 set -e
 cd "$(dirname "$0")"
 
-echo "WiFi Share Card v1.1 - Auto-detect (Mac)"
+echo "WiFi Share Card - Auto-detect (Mac)"
 echo "----------------------------------------"
 
 DEVICE=$(networksetup -listallhardwareports | awk '/Wi-Fi|AirPort/{getline; print $2}' | head -n 1)
@@ -25,7 +25,7 @@ if [ -z "$PASSWORD" ]; then
 fi
 
 HTML=""
-for f in wifi-share-card-v1.1.0.html wifi-share-card-v1.0.0.html wifi-share-card.html index.html; do
+for f in wifi-share-card-v1.2.0.html wifi-share-card-v1.1.0.html wifi-share-card-v1.0.0.html wifi-share-card.html index.html; do
   if [ -f "$f" ]; then HTML="$f"; break; fi
 done
 if [ -z "$HTML" ]; then

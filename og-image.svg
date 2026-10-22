@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1f4a"/>
+      <stop offset="0.55" stop-color="#122e66"/>
+      <stop offset="1" stop-color="#1d427f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1080" cy="60" r="230" fill="#c9a227" opacity="0.18"/>
+  <circle cx="80" cy="600" r="190" fill="#5a8ce6" opacity="0.16"/>
+  <text x="70" y="150" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#e8c95a" letter-spacing="4">WIFI SHARE CARD</text>
+  <text x="70" y="245" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="800" fill="#ffffff">Share your WiFi</text>
+  <text x="70" y="330" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="800" fill="#ffffff">with a <tspan fill="#e8c95a">QR code</tspan></text>
+  <text x="70" y="405" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#d7e2f2">Create a printable WiFi card. Phones scan and</text>
+  <text x="70" y="448" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#d7e2f2">connect in seconds. Free, offline, private.</text>
+  <g>
+    <rect x="830" y="120" width="300" height="300" rx="24" fill="#ffffff"/>
+    <g fill="#0b1f4a">
+      <rect x="860" y="150" width="66" height="66"/><rect x="1004" y="150" width="66" height="66"/><rect x="860" y="294" width="66" height="66"/>
+    </g>
+    <g fill="#ffffff">
+      <rect x="878" y="168" width="30" height="30"/><rect x="1022" y="168" width="30" height="30"/><rect x="878" y="312" width="30" height="30"/>
+    </g>
+    <g fill="#0b1f4a">
+      <rect x="952" y="150" width="22" height="22"/><rect x="952" y="196" width="22" height="22"/><rect x="878" y="240" width="22" height="22"/>
+      <rect x="926" y="240" width="22" height="22"/><rect x="1004" y="240" width="22" height="22"/><rect x="1052" y="240" width="22" height="22"/>
+      <rect x="952" y="294" width="22" height="22"/><rect x="1004" y="320" width="22" height="22"/><rect x="1052" y="366" width="22" height="22"/>
+      <rect x="952" y="366" width="22" height="22"/><rect x="878" y="388" width="0" height="0"/>
+    </g>
+  </g>
+  <text x="830" y="480" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#ffffff">SCAN TO CONNECT</text>
+  <text x="70" y="555" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#aebfd9">aamirtechs.github.io/wifi-share-card</text>
+</svg>
