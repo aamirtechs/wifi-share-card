@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.3.0, 2026-10-22
+
+- Install from GitHub Pages: the site now has a Download and Install section with one file installers served directly from Pages
+- Windows installer (Install-WiFiShareCard.bat): downloads the tool into %LOCALAPPDATA% WiFiShareCard, creates Desktop and Start Menu shortcuts via PowerShell, writes an uninstaller, no admin rights needed
+- macOS installer (install-mac.sh): installs into ~/Applications/WiFiShareCard, creates a double click Desktop .command launcher and an uninstaller
+- Linux installer (install-linux.sh): installs into ~/.local/share/wifi-share-card, adds an apps menu .desktop entry plus a Desktop shortcut and an uninstaller
+- Linux installer verified end to end twice: in a sandbox home against local files, and from the real GitHub Pages URL after publishing (files, app entry and uninstaller all created correctly)
+- Full source zip linked from the site and READMEs (GitHub generated archive of main)
+- llms.txt documents the installers for AI assistants
+
+
 ## v1.2.0, 2026-10-22
 
 - Premium UI and UX redesign: Sora plus Plus Jakarta Sans, navy and gold hero with gradient mesh, glassmorphism quick start panel, step numbered panels, sticky card preview on desktop, refined shadows, focus rings and hover states

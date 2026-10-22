@@ -23,6 +23,10 @@ No web page can read the WiFi a computer is currently connected to. Browsers blo
 
 Users can also type the network name and password into the web form manually. On Windows 11 the password is visible in Settings, Network and internet, WiFi, the connected network, View. On any Windows, `netsh wlan show profile name="SSID" key=clear` shows it as Key Content.
 
+## Installers (served from GitHub Pages)
+
+GitHub Pages also serves one file installers that visitors can download and install on their own computers: `Install-WiFiShareCard.bat` for Windows (installs to %LOCALAPPDATA%\WiFiShareCard with Desktop and Start Menu shortcuts, no admin rights), `install-mac.sh` for macOS (installs to ~/Applications/WiFiShareCard with a Desktop .command launcher), and `install-linux.sh` for Linux (installs to ~/.local/share/wifi-share-card with an apps menu entry). Each installer downloads the tool files from the live Pages URL and includes an uninstaller. The full source zip is at https://github.com/aamirtechs/wifi-share-card/archive/refs/heads/main.zip
+
 ## Who it is for
 
 Home users sharing WiFi with family and guests, offices and shops offering guest WiFi, cafes, and short stay rental hosts who want a printed scan to connect card instead of repeating the password.
@@ -38,5 +42,5 @@ Home users sharing WiFi with family and guests, offices and shops offering guest
 - Name: WiFi Share Card (WiFi QR Code Generator)
 - Price: Free, open source, MIT license
 - Platforms: Any modern web browser; launchers for Windows, macOS, Linux
-- Current version: 1.2.0 (2026-10-22)
+- Current version: 1.3.0 (2026-10-22)
 - Canonical URL: https://aamirtechs.github.io/wifi-share-card/

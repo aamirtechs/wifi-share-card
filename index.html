@@ -47,7 +47,8 @@
     "Windows, macOS and Linux launchers that detect the connected WiFi automatically",
     "Download the card or the QR code as a PNG image",
     "Works fully offline, no account, no data sent anywhere",
-    "Supports WPA, WPA2, WPA3, WEP, open and hidden networks"
+    "Supports WPA, WPA2, WPA3, WEP, open and hidden networks",
+    "One file installers for Windows, macOS and Linux with desktop shortcuts, served from GitHub Pages"
   ],
   "author": { "@type": "Person", "name": "Amir Hussain", "url": "https://github.com/aamirtechs" },
   "codeRepository": "https://github.com/aamirtechs/wifi-share-card",
@@ -213,6 +214,7 @@ footer{padding:34px 0 30px;color:var(--muted);font-size:13px;text-align:center;l
     <div class="topbar">
       <div class="brand"><div class="logo">📶</div><div>WiFi Share Card<small>WiFi QR Code Generator</small></div></div>
       <div class="top-actions">
+        <a class="gh-link" href="#download">⬇️ Install</a>
         <a class="gh-link" href="https://github.com/aamirtechs/wifi-share-card" target="_blank" rel="noopener">GitHub</a>
         <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark mode">🌙 Dark</button>
       </div>
@@ -225,6 +227,7 @@ footer{padding:34px 0 30px;color:var(--muted);font-size:13px;text-align:center;l
         <div class="hero-ctas">
           <a class="cta cta-gold" href="#tool">Create your card</a>
           <a class="cta cta-ghost" href="#how-it-works">How it works</a>
+          <a class="cta cta-ghost" href="#download">⬇️ Install the app</a>
         </div>
         <div class="trust-row"><span>🔒 100% private, runs locally</span><span>📱 iPhone and Android</span><span>🖨️ Print or save as PNG</span><span>⭐ Open source, MIT</span></div>
       </div>
@@ -353,6 +356,18 @@ footer{padding:34px 0 30px;color:var(--muted);font-size:13px;text-align:center;l
     </section>
   </div>
 
+  <!-- Download and install -->
+  <section class="block" id="download">
+    <h2>Download and install on your computer</h2>
+    <p class="lead">Prefer it installed like a real app? Download the one file installer for your system. It installs WiFi Share Card on your computer and adds a shortcut, so next time it is one click, no browser hunting. No admin rights needed, and you can uninstall any time.</p>
+    <div class="cards3">
+      <div class="feature"><div class="ic">🪟</div><h3>Windows</h3><p>One file installer. Adds WiFi Share Card to your Desktop and Start Menu. Clicking the shortcut detects your connected WiFi and opens your card.</p><p style="margin-top:12px"><a class="btn btn-gold" href="Install-WiFiShareCard.bat" download>⬇️ Download for Windows (.bat)</a></p><p>Double-click the downloaded file. If Windows SmartScreen warns you, choose More info, then Run anyway. It is a plain text script, you can open it in Notepad and read every line first.</p></div>
+      <div class="feature"><div class="ic">🍎</div><h3>macOS</h3><p>Installs into your Applications folder and puts a double-clickable WiFi Share Card launcher on your Desktop.</p><p style="margin-top:12px"><a class="btn btn-gold" href="install-mac.sh" download>⬇️ Download for Mac (.sh)</a></p><p>Open Terminal, then run:<br><code>bash ~/Downloads/install-mac.sh</code></p></div>
+      <div class="feature"><div class="ic">🐧</div><h3>Linux</h3><p>Installs into your local share folder and adds WiFi Share Card to your apps menu and Desktop.</p><p style="margin-top:12px"><a class="btn btn-gold" href="install-linux.sh" download>⬇️ Download for Linux (.sh)</a></p><p>Open a terminal, then run:<br><code>bash ~/Downloads/install-linux.sh</code></p></div>
+    </div>
+    <p class="lead" style="margin-top:20px">Want everything at once instead? <a href="https://github.com/aamirtechs/wifi-share-card/archive/refs/heads/main.zip" rel="noopener">Download the full package as a zip from GitHub</a>, extract it, and run the launcher for your system. The installers above are also plain text and open source, read them before running if you like.</p>
+  </section>
+
   <!-- How it works -->
   <section class="block" id="how-it-works">
     <h2>How WiFi QR sharing works</h2>
@@ -401,7 +416,7 @@ footer{padding:34px 0 30px;color:var(--muted);font-size:13px;text-align:center;l
 </main>
 
 <footer class="wrap">
-  WiFi Share Card v1.2.0, a free WiFi QR code generator by <a href="https://github.com/aamirtechs" target="_blank" rel="noopener">Amir Hussain</a>. Open source on <a href="https://github.com/aamirtechs/wifi-share-card" target="_blank" rel="noopener">GitHub</a>, MIT license.<br>
+  WiFi Share Card v1.3.0, a free WiFi QR code generator by <a href="https://github.com/aamirtechs" target="_blank" rel="noopener">Amir Hussain</a>. Open source on <a href="https://github.com/aamirtechs/wifi-share-card" target="_blank" rel="noopener">GitHub</a>, MIT license.<br>
   Made for sharing your own network with your own devices and guests. Keep printed cards somewhere private.
 </footer>
 

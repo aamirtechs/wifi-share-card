@@ -30,6 +30,18 @@ WiFi Share Card fixes that gap: your laptop shows the QR code, your phone scans 
 - **Downloads.** Full card as PNG, QR code only as PNG, or copy the details to clipboard.
 - **100% local and offline.** The QR library is embedded in the HTML file. No network calls, no analytics, your password never leaves your device.
 
+## Install it on your computer (from GitHub Pages)
+
+GitHub Pages serves one file installers, so visitors can install the tool like a real app:
+
+| System | Installer | What it does |
+|---|---|---|
+| Windows | [Install-WiFiShareCard.bat](https://aamirtechs.github.io/wifi-share-card/Install-WiFiShareCard.bat) | Installs to `%LOCALAPPDATA%\WiFiShareCard`, adds Desktop and Start Menu shortcuts, no admin rights, includes an uninstaller |
+| macOS | [install-mac.sh](https://aamirtechs.github.io/wifi-share-card/install-mac.sh) | Run `bash ~/Downloads/install-mac.sh`. Installs to `~/Applications/WiFiShareCard` with a Desktop `.command` launcher and an uninstaller |
+| Linux | [install-linux.sh](https://aamirtechs.github.io/wifi-share-card/install-linux.sh) | Run `bash ~/Downloads/install-linux.sh`. Installs to `~/.local/share/wifi-share-card` with an apps menu entry and an uninstaller |
+
+Each installer is a small plain text script that downloads the tool files from the live Pages site. Read it before running if you like, that is the point of plain text installers. Windows SmartScreen may warn on the `.bat` because it is downloaded from the internet: choose More info, then Run anyway. Full source zip: https://github.com/aamirtechs/wifi-share-card/archive/refs/heads/main.zip
+
 ## How to run
 
 ### Option A, fastest on Windows
@@ -80,6 +92,8 @@ macOS may ask for Keychain permission to read the saved WiFi password. That prom
 | `Show-My-WiFi.ps1` | Windows auto-detect using `netsh` |
 | `show-my-wifi-mac.sh` | macOS auto-detect |
 | `show-my-wifi-linux.sh` | Linux auto-detect using `nmcli` |
+| `Install-WiFiShareCard.bat` | Windows one file installer (Desktop and Start Menu shortcuts) |
+| `install-mac.sh` / `install-linux.sh` | macOS / Linux one file installers |
 
 ## SEO and AI discoverability
 
